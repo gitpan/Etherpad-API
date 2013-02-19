@@ -8,7 +8,7 @@ use Carp;
 BEGIN {
     use Exporter ();
     use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
-    $VERSION     = '0.04';
+    $VERSION     = '0.05';
     @ISA         = qw(Exporter);
     #Give a hoot don't pollute, do not export more than needed by default
     @EXPORT      = qw();
@@ -27,8 +27,10 @@ Etherpad::API - Access Etherpad Lite API easily
 
   use Etherpad::API;
   my $ec = Etherpad::API->new({
-    url    => "http://pad.example.com",
-    apikey => "teirnausetsraunieti"
+    url      => "http://pad.example.com",
+    apikey   => "teirnausetsraunieti",
+    user     => "apiuser",
+    password => "apipassword"
   });
 
   $ec->create_pad('new_pad_name');
@@ -53,9 +55,11 @@ This is a client for the Etherpad Lite HTTP API.
  Usage     : my $ec = Etherpad::API->new({ url => "http://pad.example.com", apikey => "secretapikey" });
  Purpose   : Constructor
  Returns   : An Etherpad::API object
- Argument  : An mandatory hash reference, containing two keys:
-                url    : the epl URL (trailing slashes will be removed)
-                apikey : the epl API key
+ Argument  : An mandatory hash reference, containing at least two keys:
+                url      : mandatory, the epl URL (trailing slashes will be removed)
+                apikey   : mandatory, the epl API key
+                user     : optional, the user for epl authentication
+                password : optional, the passowrd for epl authentication
 
 =cut
 
@@ -66,7 +70,12 @@ sub new {
     return undef unless (defined($parameters->{url}) && defined($parameters->{apikey}));
 
     $parameters->{url} =~ s#/+$## if (defined($parameters->{url}));
+    if (defined($parameters->{user}) && defined($parameters->{password})) {
+        $parameters->{url} =~ s#^(https?://)#$1$parameters->{user}:$parameters->{password}@#;
+    }
+
     $parameters->{ua} = LWP::UserAgent->new;
+
     my $self = bless ($parameters, ref ($class) || $class);
     return $self;
 }
@@ -505,7 +514,9 @@ sub get_author_name {
     if ($response->is_success) {
         my $hash = decode_json $response->decoded_content;
         if ($hash->{code} == 0) {
-            return $hash->{data};
+            # Change in the API, without documentation
+            my $data = (defined($hash->{data}->{authorName})) ? $hash->{data}->{authorName} : $hash->{data};
+            return $data;
         } else {
             die $hash->{message};
         }
@@ -1496,7 +1507,9 @@ sub list_all_pads {
     if ($response->is_success) {
         my $hash = decode_json $response->decoded_content;
         if ($hash->{code} == 0) {
-            return (wantarray) ? @{$hash->{data}} : $hash->{data};
+            # Change in the API, without documentation
+            my $data = (defined($hash->{data}->{padIDs})) ? $hash->{data}->{padIDs} : $hash->{data};
+            return (wantarray) ? @{$data} : $data;
         } else {
             die $hash->{message};
         }
