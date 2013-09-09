@@ -2,13 +2,13 @@ package Etherpad::API;
 use strict;
 use LWP::UserAgent;
 use JSON::XS;
-use Carp;
+use Carp qw(carp);
 
 
 BEGIN {
     use Exporter ();
     use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
-    $VERSION     = '0.07';
+    $VERSION     = '0.08';
     @ISA         = qw(Exporter);
     #Give a hoot don't pollute, do not export more than needed by default
     @EXPORT      = qw();
@@ -150,11 +150,11 @@ sub create_group {
         if ($hash->{code} == 0) {
             return $hash->{data}->{groupID};
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -177,7 +177,7 @@ sub create_group_if_not_exists_for {
     my $self        = shift;
     my $my_group_id = shift;
 
-    croak 'Please provide a group id' unless (defined($my_group_id));
+    carp 'Please provide a group id' unless (defined($my_group_id));
 
     my $api    = 1;
     my $method = 'createGroupIfNotExistsFor';
@@ -190,11 +190,11 @@ sub create_group_if_not_exists_for {
         if ($hash->{code} == 0) {
             return $hash->{data}->{groupID};
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -217,7 +217,7 @@ sub delete_group {
     my $self     = shift;
     my $group_id = shift;
 
-    croak 'Please provide a group id' unless (defined($group_id));
+    carp 'Please provide a group id' unless (defined($group_id));
 
     my $api    = 1;
     my $method = 'deleteGroup';
@@ -230,11 +230,11 @@ sub delete_group {
         if ($hash->{code} == 0) {
             return 1;
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -257,7 +257,7 @@ sub list_pads {
     my $self     = shift;
     my $group_id = shift;
 
-    croak 'Please provide a group id' unless (defined($group_id));
+    carp 'Please provide a group id' unless (defined($group_id));
 
     my $api    = 1;
     my $method = 'listPads';
@@ -270,11 +270,11 @@ sub list_pads {
         if ($hash->{code} == 0) {
             return (wantarray) ? @{$hash->{data}->{padIDs}}: $hash->{data}->{padIDs};
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -299,7 +299,7 @@ sub create_group_pad {
     my $pad_name = shift;
     my $text     = shift;
 
-    croak 'Please provide at least 2 arguments : the group id and the pad name' unless (defined($pad_name));
+    carp 'Please provide at least 2 arguments : the group id and the pad name' unless (defined($pad_name));
 
     my $api    = 1;
     my $method = 'createGroupPad';
@@ -313,11 +313,11 @@ sub create_group_pad {
         if ($hash->{code} == 0) {
             return 1;
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -348,11 +348,11 @@ sub list_all_groups {
         if ($hash->{code} == 0) {
             return (wantarray) ? @{$hash->{data}->{groupIDs}}: $hash->{data}->{groupIDs};
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -394,11 +394,11 @@ sub create_author {
         if ($hash->{code} == 0) {
             return $hash->{data}->{authorID};
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -422,7 +422,7 @@ sub create_author_if_not_exists_for {
     my $author_mapper = shift;
     my $name          = shift;
 
-    croak 'Please provide your application author id' unless (defined($author_mapper));
+    carp 'Please provide your application author id' unless (defined($author_mapper));
 
     my $api    = 1;
     my $method = 'createAuthorIfNotExistsFor';
@@ -436,11 +436,11 @@ sub create_author_if_not_exists_for {
         if ($hash->{code} == 0) {
             return $hash->{data}->{authorID};
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -463,7 +463,7 @@ sub list_pads_of_author {
     my $self      = shift;
     my $author_id = shift;
 
-    croak 'Please provide an author id' unless (defined($author_id));
+    carp 'Please provide an author id' unless (defined($author_id));
 
     my $api    = 1;
     my $method = 'listPadsOfAuthor';
@@ -476,11 +476,11 @@ sub list_pads_of_author {
         if ($hash->{code} == 0) {
             return (wantarray) ? @{$hash->{data}->{padIDs}}: $hash->{data}->{padIDs};
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -503,7 +503,7 @@ sub get_author_name {
     my $self      = shift;
     my $author_id = shift;
 
-    croak 'Please provide an author id' unless (defined($author_id));
+    carp 'Please provide an author id' unless (defined($author_id));
 
     my $api    = 1.1;
     my $method = 'getAuthorName';
@@ -518,10 +518,10 @@ sub get_author_name {
             my $data = (ref($hash->{data}) eq 'HASH') ? $hash->{data}->{authorName} : $hash->{data};
             return $data;
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     } else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -554,8 +554,8 @@ sub create_session {
     my $author_id   = shift;
     my $valid_until = shift;
 
-    croak 'Please provide 3 arguments : the group id, the author id and a valid unix timestamp' unless (defined($valid_until));
-    croak 'Please provide a *valid* unix timestamp as third argument' unless ($valid_until =~ m/\d+/);
+    carp 'Please provide 3 arguments : the group id, the author id and a valid unix timestamp' unless (defined($valid_until));
+    carp 'Please provide a *valid* unix timestamp as third argument' unless ($valid_until =~ m/\d+/);
 
     my $api    = 1;
     my $method = 'createSession';
@@ -568,11 +568,11 @@ sub create_session {
         if ($hash->{code} == 0) {
             return $hash->{data}->{sessionID};
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -595,7 +595,7 @@ sub delete_session {
     my $self       = shift;
     my $session_id = shift;
 
-    croak 'Please provide a session id' unless (defined($session_id));
+    carp 'Please provide a session id' unless (defined($session_id));
 
     my $api    = 1;
     my $method = 'deleteSession';
@@ -608,11 +608,11 @@ sub delete_session {
         if ($hash->{code} == 0) {
             return 1;
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -635,7 +635,7 @@ sub get_session_info {
     my $self       = shift;
     my $session_id = shift;
 
-    croak 'Please provide a session id' unless (defined($session_id));
+    carp 'Please provide a session id' unless (defined($session_id));
 
     my $api    = 1;
     my $method = 'getSessionInfo';
@@ -648,11 +648,11 @@ sub get_session_info {
         if ($hash->{code} == 0) {
             return $hash->{data};
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -675,7 +675,7 @@ sub list_sessions_of_group {
     my $self     = shift;
     my $group_id = shift;
 
-    croak 'Please provide a group id' unless (defined($group_id));
+    carp 'Please provide a group id' unless (defined($group_id));
 
     my $api    = 1;
     my $method = 'listSessionsOfGroup';
@@ -688,11 +688,11 @@ sub list_sessions_of_group {
         if ($hash->{code} == 0) {
             return $hash->{data};
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -715,7 +715,7 @@ sub list_sessions_of_author {
     my $self      = shift;
     my $author_id = shift;
 
-    croak 'Please provide an author id' unless (defined($author_id));
+    carp 'Please provide an author id' unless (defined($author_id));
 
     my $api    = 1;
     my $method = 'listSessionsOfAuthor';
@@ -728,11 +728,11 @@ sub list_sessions_of_author {
         if ($hash->{code} == 0) {
             return $hash->{data};
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -764,7 +764,7 @@ sub get_text {
     my $pad_id = shift;
     my $rev    = shift;
 
-    croak 'Please provide at least a pad id' unless (defined($pad_id));
+    carp 'Please provide at least a pad id' unless (defined($pad_id));
 
     my $api    = 1;
     my $method = 'getText';
@@ -778,11 +778,11 @@ sub get_text {
         if ($hash->{code} == 0) {
             return $hash->{data}->{text};
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -806,7 +806,7 @@ sub set_text {
     my $pad_id = shift;
     my $text   = shift;
 
-    croak 'Please provide 2 arguments : a pad id and a text' unless (defined($text));
+    carp 'Please provide 2 arguments : a pad id and a text' unless (defined($text));
 
     my $api    = 1;
     my $method = 'setText';
@@ -819,11 +819,11 @@ sub set_text {
         if ($hash->{code} == 0) {
             return 1;
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -847,7 +847,7 @@ sub get_html {
     my $pad_id = shift;
     my $rev    = shift;
 
-    croak 'Please provide at least a pad id' unless (defined($pad_id));
+    carp 'Please provide at least a pad id' unless (defined($pad_id));
 
     my $api    = 1;
     my $method = 'getHTML';
@@ -861,11 +861,11 @@ sub get_html {
         if ($hash->{code} == 0) {
             return $hash->{data}->{html};
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -904,7 +904,7 @@ sub get_chat_history {
     my $start  = shift;
     my $end    = shift;
 
-    croak 'Please provide at least a pad id' unless (defined($pad_id));
+    carp 'Please provide at least a pad id' unless (defined($pad_id));
 
     my $api    = '1.2.7';
     my $method = 'getChatHistory';
@@ -919,11 +919,11 @@ sub get_chat_history {
         if ($hash->{code} == 0) {
             return (wantarray) ? @{$hash->{data}->{messages}}: $hash->{data}->{messages};
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -946,7 +946,7 @@ sub get_chat_head {
     my $self   = shift;
     my $pad_id = shift;
 
-    croak 'Please provide a pad id' unless (defined($pad_id));
+    carp 'Please provide a pad id' unless (defined($pad_id));
 
     my $api    = '1.2.7';
     my $method = 'getChatHead';
@@ -959,11 +959,11 @@ sub get_chat_head {
         if ($hash->{code} == 0) {
             return $hash->{data}->{chatHead};
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -995,7 +995,7 @@ sub create_pad {
     my $pad_id = shift;
     my $text   = shift;
 
-    croak 'Please provide at least a pad id' unless (defined($pad_id));
+    carp 'Please provide at least a pad id' unless (defined($pad_id));
 
     my $api    = 1;
     my $method = 'createPad';
@@ -1009,11 +1009,11 @@ sub create_pad {
         if ($hash->{code} == 0) {
             return 1;
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -1036,7 +1036,7 @@ sub get_revisions_count {
     my $self   = shift;
     my $pad_id = shift;
 
-    croak 'Please provide a pad id' unless (defined($pad_id));
+    carp 'Please provide a pad id' unless (defined($pad_id));
 
     my $api    = 1;
     my $method = 'getRevisionsCount';
@@ -1049,11 +1049,11 @@ sub get_revisions_count {
         if ($hash->{code} == 0) {
             return $hash->{data}->{revisions};
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -1076,7 +1076,7 @@ sub get_users_count {
     my $self   = shift;
     my $pad_id = shift;
 
-    croak 'Please provide a pad id' unless (defined($pad_id));
+    carp 'Please provide a pad id' unless (defined($pad_id));
 
     my $api = 1;
     my $method = 'padUsersCount';
@@ -1088,11 +1088,11 @@ sub get_users_count {
         if ($hash->{code} == 0) {
             return $hash->{data}->{padUsersCount};
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -1115,7 +1115,7 @@ sub pad_users {
     my $self   = shift;
     my $pad_id = shift;
 
-    croak 'Please provide a pad id' unless (defined($pad_id));
+    carp 'Please provide a pad id' unless (defined($pad_id));
 
     my $api    = 1.1;
     my $method = 'padUsers';
@@ -1128,11 +1128,11 @@ sub pad_users {
         if ($hash->{code} == 0) {
             return (wantarray) ? @{$hash->{data}->{padUsers}} : $hash->{data}->{padUsers};
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -1155,7 +1155,7 @@ sub delete_pad {
     my $self   = shift;
     my $pad_id = shift;
 
-    croak 'Please provide a pad id' unless (defined($pad_id));
+    carp 'Please provide a pad id' unless (defined($pad_id));
 
     my $api    = 1;
     my $method = 'deletePad';
@@ -1168,11 +1168,11 @@ sub delete_pad {
         if ($hash->{code} == 0) {
             return 1;
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -1195,7 +1195,7 @@ sub get_read_only_id {
     my $self   = shift;
     my $pad_id = shift;
 
-    croak 'Please provide a pad id' unless (defined($pad_id));
+    carp 'Please provide a pad id' unless (defined($pad_id));
 
     my $api    = 1;
     my $method = 'getReadOnlyID';
@@ -1208,11 +1208,11 @@ sub get_read_only_id {
         if ($hash->{code} == 0) {
             return $hash->{data}->{readOnlyID};
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -1236,7 +1236,7 @@ sub set_public_status {
     my $pad_id        = shift;
     my $public_status = shift;
 
-    croak 'Please provide 2 arguments : a pad id and a public status (1 or 0)' unless (defined($public_status));
+    carp 'Please provide 2 arguments : a pad id and a public status (1 or 0)' unless (defined($public_status));
 
     $public_status = ($public_status) ? JSON::XS::true : JSON::XS::false;
 
@@ -1251,11 +1251,11 @@ sub set_public_status {
         if ($hash->{code} == 0) {
             return 1;
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -1278,7 +1278,7 @@ sub get_public_status {
     my $self   = shift;
     my $pad_id = shift;
 
-    croak 'Please provide a pad id' unless (defined($pad_id));
+    carp 'Please provide a pad id' unless (defined($pad_id));
 
     my $api    = 1;
     my $method = 'getPublicStatus';
@@ -1291,11 +1291,11 @@ sub get_public_status {
         if ($hash->{code} == 0) {
             return ($hash->{data}->{publicStatus}) ? 1 : 0;
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -1319,7 +1319,7 @@ sub set_password {
     my $pad_id   = shift;
     my $password = shift;
 
-    croak 'Please provide 2 arguments : a pad id and a password' unless (defined($password));
+    carp 'Please provide 2 arguments : a pad id and a password' unless (defined($password));
 
     my $api    = 1;
     my $method = 'setPassword';
@@ -1332,11 +1332,11 @@ sub set_password {
         if ($hash->{code} == 0) {
             return 1;
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -1359,7 +1359,7 @@ sub is_password_protected {
     my $self   = shift;
     my $pad_id = shift;
 
-    croak 'Please provide a pad id' unless (defined($pad_id));
+    carp 'Please provide a pad id' unless (defined($pad_id));
 
     my $api    = 1;
     my $method = 'isPasswordProtected';
@@ -1372,11 +1372,11 @@ sub is_password_protected {
         if ($hash->{code} == 0) {
             return ($hash->{data}->{passwordProtection}) ? 1 : 0;
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -1399,7 +1399,7 @@ sub list_authors_of_pad {
     my $self   = shift;
     my $pad_id = shift;
 
-    croak 'Please provide a pad id' unless (defined($pad_id));
+    carp 'Please provide a pad id' unless (defined($pad_id));
 
     my $api    = 1;
     my $method = 'listAuthorsOfPad';
@@ -1412,11 +1412,11 @@ sub list_authors_of_pad {
         if ($hash->{code} == 0) {
             return (wantarray) ? @{$hash->{data}->{authorIDs}} : $hash->{data}->{authorIDs};
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -1439,7 +1439,7 @@ sub list_names_of_authors_of_pad {
     my $self   = shift;
     my $pad_id = shift;
 
-    croak 'Please provide a pad id' unless (defined($pad_id));
+    carp 'Please provide a pad id' unless (defined($pad_id));
 
     my @names;
     my $anonymous = 0;
@@ -1478,7 +1478,7 @@ sub get_last_edited {
     my $self   = shift;
     my $pad_id = shift;
 
-    croak 'Please provide at least a pad id' unless (defined($pad_id));
+    carp 'Please provide at least a pad id' unless (defined($pad_id));
 
     my $api    = 1;
     my $method = 'getLastEdited';
@@ -1491,11 +1491,11 @@ sub get_last_edited {
         if ($hash->{code} == 0) {
             return $hash->{data}->{lastEdited};
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -1519,7 +1519,7 @@ sub send_clients_message {
     my $pad_id = shift;
     my $msg    = shift;
 
-    croak "Please provide 2 arguments : the pad id and a message" unless (defined($msg));
+    carp "Please provide 2 arguments : the pad id and a message" unless (defined($msg));
 
     my $api    = 1.1;
     my $method = 'sendAPIsMessage';
@@ -1532,11 +1532,11 @@ sub send_clients_message {
         if ($hash->{code} == 0) {
             return 1;
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -1571,7 +1571,7 @@ sub check_token {
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -1609,11 +1609,11 @@ sub list_all_pads {
             my $data = (ref($hash->{data}) eq 'HASH') ? $hash->{data}->{padIDs} : $hash->{data};
             return (wantarray) ? @{$data} : $data;
         } else {
-            die $hash->{message};
+            carp $hash->{message};
         }
     }
     else {
-        die $response->status_line;
+        carp $response->status_line;
     }
 }
 
@@ -1632,8 +1632,8 @@ Bugs and feature requests will be tracked at RT:
 
 The latest source code can be browsed and fetched at:
 
-    https://dev.fiat-tux.fr/projects/etherpad-api
-    git clone git://git.fiat-tux.fr/Etherpad-API.git
+    https://github.com/ldidry/etherpad-api
+    git clone git://github.com/ldidry/etherpad-api.git
 
 You can also look for information at:
 
