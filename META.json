@@ -4,7 +4,7 @@
       "Luc DIDRY (ldidry@cpan.org)"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "ExtUtils::MakeMaker version 6.76, CPAN::Meta::Converter version 2.132140",
+   "generated_by" : "ExtUtils::MakeMaker version 6.66, CPAN::Meta::Converter version 2.120921",
    "license" : [
       "unknown"
    ],
@@ -19,20 +19,6 @@
          "inc"
       ]
    },
-   "prereqs" : {
-      "build" : {
-         "requires" : {
-            "ExtUtils::MakeMaker" : "0"
-         }
-      },
-      "runtime" : {
-         "requires" : {
-            "JSON::XS" : "0",
-            "LWP::UserAgent" : "0",
-            "Test::Simple" : "0.44"
-         }
-      }
-   },
    "release_status" : "stable",
    "resources" : {
       "repository" : {
@@ -41,5 +27,5 @@
          "web" : "https://github.com/ldidry/etherpad-api"
       }
    },
-   "version" : "0.08"
+   "version" : "0.09"
 }

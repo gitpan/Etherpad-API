@@ -2,10 +2,9 @@
 abstract: 'Access Etherpad Lite API easily'
 author:
   - 'Luc DIDRY (ldidry@cpan.org)'
-build_requires:
-  ExtUtils::MakeMaker: 0
+build_requires: {}
 dynamic_config: 1
-generated_by: 'ExtUtils::MakeMaker version 6.76, CPAN::Meta::Converter version 2.132140'
+generated_by: 'ExtUtils::MakeMaker version 6.66, CPAN::Meta::Converter version 2.120921'
 license: unknown
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -15,10 +14,6 @@ no_index:
   directory:
     - t
     - inc
-requires:
-  JSON::XS: 0
-  LWP::UserAgent: 0
-  Test::Simple: 0.44
 resources:
   repository: git://github.com/ldidry/etherpad-api.git
-version: 0.08
+version: 0.09
