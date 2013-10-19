@@ -16,4 +16,4 @@ no_index:
     - inc
 resources:
   repository: git://github.com/ldidry/etherpad-api.git
-version: 0.09
+version: 0.10
